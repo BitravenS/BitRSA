@@ -2,6 +2,11 @@
 
 BitRSA is an advanced RSA challenge tool designed for CTF challenges and security research. It provides a collection of RSA attacks and utilities that can be used to test and exploit RSA vulnerabilities in various scenarios. 🔐
 
+
+![GitHub commit activity](https://img.shields.io/github/commit-activity/m/BitravenS/BitRSA)
+![Visitor Count](https://visitor-badge.glitch.me/badge?page_id=BitravenS.BitRSA)
+![GitHub Repo stars](https://img.shields.io/github/stars/BitravenS/BitRSA?style=social)
+![GitHub forks](https://img.shields.io/github/forks/BitravenS/BitRSA?style=social)
 ---
 
 ## Table of Contents 📚
