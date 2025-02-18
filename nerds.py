@@ -20,6 +20,13 @@ def parse_factors(factors):
     return [f for f, i in factors for _ in range(i)]
 
 
+def parse_factorsDB(factors):
+    """
+    Parses the factors list from factorDB to a friendlier format.
+    """
+    return [int(f[0]) for f in factors for _ in range(f[1])]
+
+
 def factorize(n, i=0):
     """
     Factorizes n (with a known factor i)
