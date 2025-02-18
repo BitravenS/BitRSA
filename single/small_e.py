@@ -3,7 +3,6 @@ from concurrent.futures import ProcessPoolExecutor, wait, FIRST_COMPLETED
 from Crypto.Util.number import long_to_bytes, bytes_to_long, getPrime
 from gmpy2 import iroot
 from tqdm import tqdm
-from sympy import cbrt
 import sys
 import signal
 
@@ -94,6 +93,11 @@ def partial_plaintext(n, c, e, len_flag=0, prefix="", cpu=os.cpu_count(), **kwar
     if total_steps > 10**15:
         log.critical("The search space is too large")
         log.critical("The program is unlikely to finish")
+        if total_steps > 10**100:
+            log.critical(
+                "Unrealistic search range. Try setting up a flag length. Aborting"
+            )
+            raise utils.Failure("Aborting")
 
     print(f"{utils.YELLOW}")
     with tqdm(total=total_steps, desc="Overall Progress", position=0) as progress:

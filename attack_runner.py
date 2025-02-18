@@ -150,7 +150,7 @@ def test_attacks(selected_numbers: List[int], input_data: Dict[str, Any]) -> Lis
             validate_input(input_data, num)
             valid.append(num)
         except ValueError as e:
-            log.error(f"Attack {num} failed validation: {e}. Skipping.")
+            log.error(f"{ALL_OPTIONS[num]["name"]} failed validation: {e}. Skipping.")
     return valid
 
 
