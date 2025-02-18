@@ -20,6 +20,7 @@ def common_n_XGCD(n, c, e, timeout=10):
     """
     signal.alarm(timeout)
     log = utils.Logs("Extended GCD")
+    n = n[0]
     g, coeffs = multi_xgcd(e)
     if g != 1:
         raise utils.MathException("Exponents are not coprime! Cannot recover m.")

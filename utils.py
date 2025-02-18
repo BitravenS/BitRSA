@@ -76,14 +76,16 @@ Miscelaneous utility functions
 """
 
 
+def euler_phi(factors):
+    n = math.prod(factors)
+    phi = math.prod(x - 1 for x in set(factors))
+    return int(n), int(phi * (n // math.prod(set(factors))))
+
+
 def rsa_decrypt(factors, e, c):
     """Decrypts a ciphertext given p and q."""
 
-    n = math.prod(factors)
-    if factors[0] == factors[1]:
-        phi = factors[0] * (factors[1] - 1)
-    else:
-        phi = math.prod(x - 1 for x in factors)
+    n, phi = euler_phi(factors)
     d = inverse(e, phi)
     m = pow(c, d, n)
     msg = long_to_bytes(m)

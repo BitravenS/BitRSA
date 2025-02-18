@@ -44,9 +44,7 @@ def load_params() -> Dict[str, Any]:
 
     # Load moduli 'N'
     n = []
-    log.debug(
-        f"Enter your moduli {utils.YELLOW}'N'{utils.RESET} (press 'n' or ENTER to finish):"
-    )
+    log.debug(f"Enter your moduli {utils.YELLOW}'N'{utils.RESET} :")
     while True:
         n_i = input("> ").strip()
         if n_i.lower() == "n" or not n_i:
@@ -58,9 +56,7 @@ def load_params() -> Dict[str, Any]:
 
     # Load public exponents 'e'
     print("")
-    log.debug(
-        f"Enter your public exponents {utils.YELLOW}'e'{utils.RESET} (press 'n' or ENTER to finish):"
-    )
+    log.debug(f"Enter your public exponents {utils.YELLOW}'e'{utils.RESET} :")
     log.warning(
         "The order of the public exponents should match the order of the moduli"
     )
@@ -75,9 +71,7 @@ def load_params() -> Dict[str, Any]:
         e.append(int(e_i))
     print("")
     # Load ciphertexts 'c'
-    log.debug(
-        f"Enter your ciphertexts {utils.YELLOW}'c'{utils.RESET} (press 'n' or ENTER to finish):"
-    )
+    log.debug(f"Enter your ciphertexts {utils.YELLOW}'c'{utils.RESET} :")
     log.warning("The order of the ciphertexts should match the order of the moduli")
     c = []
     while True:
@@ -98,14 +92,14 @@ def load_params() -> Dict[str, Any]:
     add_args = input("> ").strip().lower()
     if add_args == "y":
         log.debug(
-            f"Enter the {utils.YELLOW}prefix of the flag{utils.RESET} (optional, press 'n' or ENTER to skip):"
+            f"Enter the {utils.YELLOW}prefix of the flag{utils.RESET} (optional):"
         )
         prefix = input("> ").strip()
         if prefix and prefix.lower() != "n":
             input_data["prefix"] = prefix
         print("")
         log.debug(
-            f"Enter the {utils.YELLOW}length of the flag{utils.RESET} (optional, press 'n' or ENTER to skip):"
+            f"Enter the {utils.YELLOW}length of the flag{utils.RESET} (optional):"
         )
         len_flag = input("> ").strip()
         if len_flag and len_flag.lower() != "n":
@@ -115,7 +109,7 @@ def load_params() -> Dict[str, Any]:
                 log.error("Invalid input. Please enter a valid number next time.")
         print("")
         log.debug(
-            f"Enter the {utils.YELLOW}timeout{utils.RESET} for each attack in seconds (defaults to 10 seconds, press 'n' or ENTER to skip):"
+            f"Enter the {utils.YELLOW}timeout{utils.RESET} for each attack in seconds (defaults to 10 seconds):"
         )
         timeout = input("> ").strip()
         if timeout and timeout.lower() != "n":
@@ -125,7 +119,7 @@ def load_params() -> Dict[str, Any]:
                 log.error("Invalid input. Please enter a valid number next time.")
         print("")
         log.debug(
-            f"Enter the {utils.YELLOW}number of CPU cores{utils.RESET} to use (defaults to MAX, press 'n' or ENTER to skip):"
+            f"Enter the {utils.YELLOW}number of CPU cores{utils.RESET} to use (defaults to MAX):"
         )
         cpu = input("> ").strip()
         if cpu and cpu.lower() != "n":
@@ -140,7 +134,7 @@ def load_params() -> Dict[str, Any]:
     )
     save = input("> ").strip().lower()
     if save == "y":
-        log.debug("Enter the filename:")
+        log.debug("Enter the filename (.json):")
         filename = input("> ").strip()
         with open(filename, "w") as f:
             json.dump(input_data, f)

@@ -16,6 +16,7 @@ def broadcast_attack(c, e, n, timeout=10):
     """
     signal.alarm(timeout)
     log = utils.Logs("Broadcast")
+    e = e[0]
     if e > len(n):
         raise utils.MathException("e should be less than the number of moduli.")
     val = crt(c, n)

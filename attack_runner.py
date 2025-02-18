@@ -23,12 +23,7 @@ ATTACKS_MLT: Dict[int, Dict[str, Any]] = {
     10: {"name": "Coppersmith's Attack", "function": coopersmith.Coopersmith},
 }
 
-TOOLS: Dict[int, Dict[str, Any]] = {
-    11: {"name": "Public Key Extractor", "function": pub_ext.pub_ext},
-    12: {"name": "Private Key Extractor", "function": priv_ext.priv_ext},
-}
-
-ALL_OPTIONS: Dict[int, Dict[str, Any]] = {**ATTACKS_SGL, **ATTACKS_MLT, **TOOLS}
+ALL_OPTIONS: Dict[int, Dict[str, Any]] = {**ATTACKS_SGL, **ATTACKS_MLT}
 
 
 def validate_input(input_data: Dict[str, Any], attack_id: int = 0) -> bool:
@@ -107,10 +102,6 @@ def display_attack_menu() -> None:
     log.info("Multi-Keypair Attacks:")
     for num, attack in ATTACKS_MLT.items():
         print(f"{utils.RED}{num}:{utils.GREEN} {attack['name']}{utils.RESET}")
-    print("")
-    log.info("Tools:")
-    for num, tool in TOOLS.items():
-        print(f"{utils.RED}{num}:{utils.GREEN} {tool['name']}{utils.RESET}")
     print("")
     print(
         f"{utils.RED}0: {utils.GREEN}Run All Applicable Attacks (Except for the Chosen Ciphertext Attack){utils.RESET}"
@@ -265,4 +256,8 @@ def parse_results(results: Tuple[int, Any]) -> None:
         except Exception:
             log.warning("Couldn't decode the result. Displaying raw output:")
             log.info(f"{res}")
-    exit(0)
+    if num == 1:
+        log.debug(
+            "Small e attack sometimes fails to terminate properly. Please press CTRL+C to exit."
+        )
+    return

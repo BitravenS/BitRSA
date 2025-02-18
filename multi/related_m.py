@@ -10,6 +10,8 @@ import random
 
 def franklin_reiter(e, c, a, b):
     c1, c2 = c[0], c[1]
+    if type(e) == list:
+        e = e[0]
     """
     Performs the Franklin-Reiter related message attack.
 

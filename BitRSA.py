@@ -92,7 +92,9 @@ def main() -> None:
     # Perform the selected attacks/tools.
     result = perform_selected_attacks(selected_numbers, input_data)
     parse_results(result)
+    return
 
 
 if __name__ == "__main__":
     main()
+    exit(0)

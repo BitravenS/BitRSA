@@ -20,6 +20,6 @@ def common_fact(n, e, c):
                     f"Common factor found between the moduli number {i} and {j}: {g}"
                 )
                 factors = [g] + sage_factorize(n[i] // g)
-                return utils.rsa_decrypt(factors, e, c[i])
+                return utils.rsa_decrypt(factors, e[0], c[i])
     log.warning("No common factors found.")
     return None

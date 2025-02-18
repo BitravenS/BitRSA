@@ -16,6 +16,8 @@ def Coopersmith(c, e, n, timeout=10):
     Notes: The attack works when the difference between the two messages is small.
     """
     c1, c2 = c[0], c[1]
+    n = n[0]
+    e = e[0]
     log = utils.Logs("Coopersmith")
     signal.alarm(timeout)
     Rxy = PolynomialRing(Zmod(n), names=("x", "y"))
