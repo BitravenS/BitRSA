@@ -1,0 +1,12 @@
+gmpy2==2.2.1
+pycryptodome==3.21.0
+Requests==2.32.3
+sagemath_bliss==10.5
+sagemath_coxeter3==10.5
+sagemath_mcqd==10.5
+sagemath_meataxe==10.5
+sagemath_sirocco==10.5
+sagemath_standard==10.5
+sagemath_tdlib==10.5
+sympy==1.13.3
+tqdm==4.67.1
