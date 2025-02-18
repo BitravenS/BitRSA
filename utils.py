@@ -3,8 +3,10 @@ from datetime import datetime
 from Crypto.Util.number import long_to_bytes, inverse
 import math
 import signal
+import os
+import sys
 
-
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 # ANSI color codes
 RED = "\x1b[31m"
 BOLD_RED = "\x1b[31;1m"
@@ -88,8 +90,18 @@ def rsa_decrypt(factors, e, c):
 
 
 def header():
-    with open("header.txt", "r") as f:
-        print(f"{BLUE}{f.read()}{RESET}")
+    head = r"""
+           ▄▄                                                      
+▀███▀▀▀██▄ ██   ██                                                 
+  ██    ██      ██                                                 
+  ██    █████ ██████▀███▄███ ▄█▀██▄ ▀██▀   ▀██▀  ▄▄█▀██▀████████▄  
+  ██▀▀▀█▄▄ ██   ██    ██▀ ▀▀██   ██   ██   ▄█   ▄█▀   ██ ██    ██  
+  ██    ▀█ ██   ██    ██     ▄█████    ██ ▄█    ██▀▀▀▀▀▀ ██    ██  
+  ██    ▄█ ██   ██    ██    ██   ██     ███     ██▄    ▄ ██    ██  
+▄████████▄████▄ ▀████████▄  ▀████▀██▄    █       ▀█████▀████  ████▄
+
+    """
+    print(f"{BLUE}{head}{RESET}")
 
 
 """

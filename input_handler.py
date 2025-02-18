@@ -135,16 +135,16 @@ def load_params() -> Dict[str, Any]:
                 log.error("Invalid input. Please enter a valid number next time.")
         print("")
 
-        log.debug(
-            f"Would you like to save the parameters to a {utils.YELLOW}JSON file? (y/N){utils.RESET}:"
-        )
-        save = input("> ").strip().lower()
-        if save == "y":
-            log.debug("Enter the filename:")
-            filename = input("> ").strip()
-            with open(filename, "w") as f:
-                json.dump(input_data, f)
-            log.info(f"Parameters saved to {filename}")
-        print("")
+    log.debug(
+        f"Would you like to save the parameters to a {utils.YELLOW}JSON file? (y/N){utils.RESET}:"
+    )
+    save = input("> ").strip().lower()
+    if save == "y":
+        log.debug("Enter the filename:")
+        filename = input("> ").strip()
+        with open(filename, "w") as f:
+            json.dump(input_data, f)
+        log.info(f"Parameters saved to {filename}")
+    print("")
 
     return input_data
