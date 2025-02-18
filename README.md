@@ -4,7 +4,7 @@ BitRSA is an advanced RSA challenge tool designed for CTF challenges and securit
 
 
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/BitravenS/BitRSA)
-![Visitor Count](https://visitor-badge.glitch.me/badge?page_id=BitravenS.BitRSA)
+![Visitor Count](https://komarev.com/ghpvc/?username=BitravenS&color=blue)
 ![GitHub Repo stars](https://img.shields.io/github/stars/BitravenS/BitRSA?style=social)
 ![GitHub forks](https://img.shields.io/github/forks/BitravenS/BitRSA?style=social)
 ---
