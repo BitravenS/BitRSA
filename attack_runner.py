@@ -196,6 +196,10 @@ def perform_selected_attacks(
         log.error("No valid attacks selected. Exiting...")
         exit(1)
 
+    if 1 in selected_numbers:
+        selected_numbers.remove(1)
+        selected_numbers.append(1)  # Small e attack should be performed last
+
     log.debug("Attacks to perform:")
     for s in selected_numbers:
         log.debug(f"{ALL_OPTIONS[s]['name']}")
@@ -244,7 +248,8 @@ def parse_results(results: Tuple[int, Any]) -> None:
         try:
             flag, _ = res  # Unpack tuple result
             try:
-                flag = flag.decode()
+                if type(flag) != str:
+                    flag = flag.decode()
             except UnicodeDecodeError:
                 log.warning("Failed to decode the flag. Displaying raw bytes")
             log.info(f"{flag}")
@@ -254,8 +259,9 @@ def parse_results(results: Tuple[int, Any]) -> None:
     else:
         # For other attacks, the result may be in bytes.
         try:
-            flag = res.decode()
-            log.info(f"{flag}")
+            if type(res) != str:
+                res = res.decode()
+            log.info(f"{res}")
         except Exception:
             log.warning("Couldn't decode the result. Displaying raw output:")
             log.info(f"{res}")

@@ -43,7 +43,7 @@ def check_candidate(args):
     return None
 
 
-def wiener_attack(n, e, num_workers=os.cpu_count(), timeout=10, **kwargs):
+def wiener_attack(c, n, e, num_workers=os.cpu_count(), timeout=10, **kwargs):
     """
     "Wiener's Attack" to recover the private key from a given public key.
     Note: The attack works when d < 1/3 * N^(1/4).

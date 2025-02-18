@@ -14,7 +14,7 @@ from nerds import *
 signal.signal(signal.SIGALRM, utils.timeout_handler)
 
 
-def factordb(n):
+def factordb(n, **kwargs):
     """Attempts to factor n using FactorDB API."""
     log = utils.Logs("FoctorDB")
     url = f"http://factordb.com/api?query={n}"
@@ -27,7 +27,7 @@ def factordb(n):
     return None
 
 
-def factorize_with_timeout(n, result_queue):
+def factorize_with_timeout(n, result_queue, **kwargs):
     """
     Enable timouts for the factorization method.
     """
@@ -41,7 +41,7 @@ def factorize_with_timeout(n, result_queue):
         result_queue.put(None)
 
 
-def sage_factorize(n, timeout=10):
+def sage_factorize(n, timeout=10, **kwargs):
     """
     Attempts to factor n using Sage's built-in factor method.
     It automatically picks the most optimal method for the given input.
