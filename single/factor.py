@@ -14,7 +14,7 @@ from nerds import *
 signal.signal(signal.SIGALRM, utils.timeout_handler)
 
 
-def factordb(n, **kwargs):
+def factordb(n):
     """Attempts to factor n using FactorDB API."""
     log = utils.Logs("FoctorDB")
     url = f"http://factordb.com/api?query={n}"
@@ -27,7 +27,7 @@ def factordb(n, **kwargs):
     return None
 
 
-def factorize_with_timeout(n, result_queue, **kwargs):
+def factorize_with_timeout(n, result_queue):
     """
     Enable timouts for the factorization method.
     """
@@ -41,7 +41,7 @@ def factorize_with_timeout(n, result_queue, **kwargs):
         result_queue.put(None)
 
 
-def sage_factorize(n, timeout=10, **kwargs):
+def sage_factorize(n, timeout=10):
     """
     Attempts to factor n using Sage's built-in factor method.
     It automatically picks the most optimal method for the given input.
@@ -69,7 +69,7 @@ def sage_factorize(n, timeout=10, **kwargs):
         return None
 
 
-def fermat_factorization(n, timeout=10, **kwargs):
+def fermat_factorization(n, timeout=10):
     """
     Attempts fo factorize n using Fermat's factorization method.
     Best suited for numbers with two close prime factors.
@@ -95,7 +95,7 @@ def fermat_factorization(n, timeout=10, **kwargs):
     return [a - b, a + b]
 
 
-def facorize(n, e, c, timeout=10, **kwargs):
+def factorize(n, e, c, timeout=10, **kwargs):
     """
     Attempts to factor n using the best available method.
     """
@@ -109,13 +109,13 @@ def facorize(n, e, c, timeout=10, **kwargs):
         if ret:
             return utils.rsa_decrypt(ret, e, c)
     except TimeoutError:
-        log.warning("Timeout reached. Trying Fermat's factorization...")
+        log.warning("Timeout reached. ")
     try:
         log.debug("Trying Fermat's factorization...")
         return utils.rsa_decrypt(fermat_factorization(n, timeout), e, c)
     except TimeoutError:
         log.error("Timeout reached. No factors found :(")
-        return None
+        raise utils.Failure("No factors found.")
 
 
 def test():
@@ -129,7 +129,7 @@ def test():
     m = b"flag{test}"
     c = pow(bytes_to_long(m), e, n)
 
-    s = facorize(n, e, c, timeout=40)
+    s = factorize(n, e, c, timeout=40)
     print(s)
     try:
         k, _ = fermat_factorization(n)

@@ -3,6 +3,7 @@ from concurrent.futures import ProcessPoolExecutor, wait, FIRST_COMPLETED
 from Crypto.Util.number import long_to_bytes, bytes_to_long, getPrime
 from gmpy2 import iroot
 from tqdm import tqdm
+from sympy import cbrt
 import sys
 import signal
 
@@ -48,16 +49,18 @@ def partial_plaintext(n, c, e, len_flag=0, prefix="", cpu=os.cpu_count(), **kwar
     log = utils.Logs("Small e")
     prefix_num = bytes_to_long(prefix.encode()) if prefix else 0
     if len_flag == 0:
-        log.warning("Length of flag not provided. Will search for lengths from 8 to 32")
+        log.warning(
+            "Length of flag not provided. Will search for lengths from 8 onwards"
+        )
         log.warning("This may take a long time")
         shift_min = 8 * (8 - len(prefix))
-        shift_max = 8 * (32 - len(prefix))
+        shift_max = 8 * (128 - len(prefix))
     else:
         shift_min = 8 * (len_flag - len(prefix))
         shift_max = shift_min
     min_M = prefix_num << shift_min if prefix else 0
     if len_flag == 0:
-        max_M = (prefix_num + 1) << shift_max if prefix else (1 << (8 * 32))
+        max_M = (prefix_num + 1) << shift_max if prefix else (1 << (8 * 128))
     else:
         max_M = (prefix_num + 1) << shift_max if prefix else (1 << (8 * len_flag))
 
@@ -72,6 +75,18 @@ def partial_plaintext(n, c, e, len_flag=0, prefix="", cpu=os.cpu_count(), **kwar
         c += k * n
 
     if c >= max_val:
+        log.critical("Starting point exceeds max_val")
+        log.warning("Attempting an e-th root of the ciphertext")
+        root, is_exact = iroot(c, e)
+        if is_exact:
+            try:
+                flag = long_to_bytes(root).decode("utf-8")
+                print("realll")
+                return long_to_bytes(root)
+            except UnicodeDecodeError:
+                pass
+
+        log.error("Womp womp :(")
         raise utils.Failure("Starting point exceeds max_val")
 
     step = n * 100000
