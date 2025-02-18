@@ -22,7 +22,8 @@ def find_root(start, end, n, e):
         root, is_exact = iroot(current, e)
         if is_exact:
             try:
-                return long_to_bytes(root).decode("utf-8")
+                flag = long_to_bytes(root).decode("utf-8")
+                return long_to_bytes(root)
             except UnicodeDecodeError:
                 pass
         current += n

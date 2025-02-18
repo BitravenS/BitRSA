@@ -240,10 +240,14 @@ def parse_results(results: Tuple[int, Any]) -> None:
         exit(1)
 
     # For attacks where the result is expected to be a tuple (e.g., (flag, int_flag))
-    if 0 < num < 6 or num == 7:
+    if 1 < num < 6 or num == 7:
         try:
             flag, _ = res  # Unpack tuple result
-            log.info(f"Recovered flag: {flag}")
+            try:
+                flag = flag.decode()
+            except UnicodeDecodeError:
+                log.warning("Failed to decode the flag. Displaying raw bytes")
+            log.info(f"{flag}")
         except Exception:
             log.warning("Couldn't parse the result as a tuple. Displaying raw output:")
             log.info(f"{res}")
@@ -251,7 +255,7 @@ def parse_results(results: Tuple[int, Any]) -> None:
         # For other attacks, the result may be in bytes.
         try:
             flag = res.decode()
-            log.info(f"Recovered flag: {flag}")
+            log.info(f"{flag}")
         except Exception:
             log.warning("Couldn't decode the result. Displaying raw output:")
             log.info(f"{res}")

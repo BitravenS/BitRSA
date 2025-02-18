@@ -44,7 +44,9 @@ def load_params() -> Dict[str, Any]:
 
     # Load moduli 'N'
     n = []
-    log.debug("Enter your moduli 'N' (press 'n' or ENTER to finish):")
+    log.debug(
+        f"Enter your moduli {utils.YELLOW}'N'{utils.RESET} (press 'n' or ENTER to finish):"
+    )
     while True:
         n_i = input("> ").strip()
         if n_i.lower() == "n" or not n_i:
@@ -56,7 +58,9 @@ def load_params() -> Dict[str, Any]:
 
     # Load public exponents 'e'
     print("")
-    log.debug("Enter your public exponents 'e' (press 'n' or ENTER to finish):")
+    log.debug(
+        f"Enter your public exponents {utils.YELLOW}'e'{utils.RESET} (press 'n' or ENTER to finish):"
+    )
     log.warning(
         "The order of the public exponents should match the order of the moduli"
     )
@@ -71,7 +75,9 @@ def load_params() -> Dict[str, Any]:
         e.append(int(e_i))
     print("")
     # Load ciphertexts 'c'
-    log.debug("Enter your ciphertexts 'c' (press 'n' or ENTER to finish):")
+    log.debug(
+        f"Enter your ciphertexts {utils.YELLOW}'c'{utils.RESET} (press 'n' or ENTER to finish):"
+    )
     log.warning("The order of the ciphertexts should match the order of the moduli")
     c = []
     while True:
@@ -87,19 +93,19 @@ def load_params() -> Dict[str, Any]:
 
     # Ask for additional arguments.
     log.debug(
-        f"Would you like to add additional arguments? (flag length, prefix, timeout, core count){utils.GREEN}(y/N){utils.RESET}:"
+        f"Would you like to add additional arguments? {utils.YELLOW}(flag length, prefix, timeout, core count){utils.GREEN}(y/N){utils.RESET}:"
     )
     add_args = input("> ").strip().lower()
     if add_args == "y":
         log.debug(
-            "Enter the prefix of the flag (optional, press 'n' or ENTER to skip):"
+            f"Enter the {utils.YELLOW}prefix of the flag{utils.RESET} (optional, press 'n' or ENTER to skip):"
         )
         prefix = input("> ").strip()
         if prefix and prefix.lower() != "n":
             input_data["prefix"] = prefix
         print("")
         log.debug(
-            "Enter the length of the flag (optional, press 'n' or ENTER to skip):"
+            f"Enter the {utils.YELLOW}length of the flag{utils.RESET} (optional, press 'n' or ENTER to skip):"
         )
         len_flag = input("> ").strip()
         if len_flag and len_flag.lower() != "n":
@@ -109,22 +115,22 @@ def load_params() -> Dict[str, Any]:
                 log.error("Invalid input. Please enter a valid number next time.")
         print("")
         log.debug(
-            "Enter the timeout for each attack in seconds (defaults to 10 seconds, press 'n' or ENTER to skip):"
+            f"Enter the {utils.YELLOW}timeout{utils.RESET} for each attack in seconds (defaults to 10 seconds, press 'n' or ENTER to skip):"
         )
         timeout = input("> ").strip()
         if timeout and timeout.lower() != "n":
             try:
-                input_data["timeout"] = timeout
+                input_data["timeout"] = int(timeout)
             except ValueError:
                 log.error("Invalid input. Please enter a valid number next time.")
         print("")
         log.debug(
-            "Enter the number of CPU cores to use (defaults to MAX, press 'n' or ENTER to skip):"
+            f"Enter the {utils.YELLOW}number of CPU cores{utils.RESET} to use (defaults to MAX, press 'n' or ENTER to skip):"
         )
         cpu = input("> ").strip()
         if cpu and cpu.lower() != "n":
             try:
-                input_data["cpu"] = cpu
+                input_data["cpu"] = int(cpu)
             except ValueError:
                 log.error("Invalid input. Please enter a valid number next time.")
         print("")
