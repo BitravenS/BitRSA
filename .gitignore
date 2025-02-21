@@ -3,3 +3,4 @@ __pycache__/
 *.pyo
 *.pyd
 *.json
+testing/

@@ -3,7 +3,7 @@ import os
 from Crypto.PublicKey import RSA
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-import utils
+import Util.utils as utils
 
 
 def pub_ext(file):

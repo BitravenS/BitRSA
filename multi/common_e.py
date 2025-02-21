@@ -1,11 +1,13 @@
 from sage.all import *
-from Crypto.Util.number import getPrime, bytes_to_long, long_to_bytes
+from Crypto.Util.number import getPrime, bytes_to_long, long_to_bytes, inverse
 from sympy import integer_nthroot
+from itertools import combinations
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-import utils
-from nerds import *
+import Util.utils as utils
+from Util.nerds import *
 import signal
+from pprint import pprint
 
 signal.signal(signal.SIGALRM, utils.timeout_handler)
 
@@ -19,12 +21,21 @@ def broadcast_attack(c, e, n, timeout=10):
     e = e[0]
     if e > len(n):
         raise utils.MathException("e should be less than the number of moduli.")
-    val = crt(c, n)
-    m, valid = integer_nthroot(val, e)
-    if not valid:
-        raise utils.MathException("The e-th root was not exact")
-    log.info(f"Recovered message (hex): {hex(m)[2:]}")
-    return long_to_bytes(m)
+    for grp in combinations(zip(n, c), e):
+        N = 1
+        for x in grp:
+            N *= x[0]
+
+        M = 0
+        for x in grp:
+            M += x[1] * inverse(N // x[0], x[0]) * (N // x[0])
+        M %= N
+
+        m, exact = integer_nthroot(M, e)
+        if exact:
+            log.info(f"Recovered message (hex): {hex(m)[2:]}")
+            return long_to_bytes(m)
+    raise utils.Failure("Could not recover the message.")
 
 
 def test():
@@ -43,7 +54,7 @@ def test():
     for N in moduli:
         c = pow(m_int, e, N)
         ciphertexts.append(c)
-
+    e = [e]
     recovered = broadcast_attack(ciphertexts, e, moduli)
     print("Recovered message:", recovered)
 

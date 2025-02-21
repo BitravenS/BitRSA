@@ -7,7 +7,7 @@ import sys
 import signal
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-import utils
+import Util.utils as utils
 
 signal.signal(signal.SIGALRM, utils.timeout_handler)
 
@@ -40,7 +40,9 @@ def sci_format(num):
         return ret
 
 
-def partial_plaintext(n, c, e, len_flag=0, prefix="", cpu=os.cpu_count(), **kwargs):
+def partial_plaintext(
+    n, c, e, len_flag=0, prefix="", cpu=os.cpu_count(), tq=True, **kwargs
+):
     """
     Attempts to recover a plaintext message from a ciphertext by searching for a valid e-th root in a large range.
     Uses parallel processing to divide the search space across multiple CPU cores. Supports optional prefix and flag length constraints.
@@ -93,14 +95,50 @@ def partial_plaintext(n, c, e, len_flag=0, prefix="", cpu=os.cpu_count(), **kwar
     if total_steps > 10**15:
         log.critical("The search space is too large")
         log.critical("The program is unlikely to finish")
-        if total_steps > 10**100:
+        if total_steps > 10**100 and tq:
             log.critical(
                 "Unrealistic search range. Try setting up a flag length. Aborting"
             )
             raise utils.Failure("Aborting")
 
     print(f"{utils.YELLOW}")
-    with tqdm(total=total_steps, desc="Overall Progress", position=0) as progress:
+    if tq:
+        with tqdm(total=total_steps, desc="Overall Progress", position=0) as progress:
+            with ProcessPoolExecutor(max_workers=num_workers) as executor:
+                futures = {}
+                start_gen = (c + i * step for i in range(0, (max_val - c) // step + 1))
+
+                for _ in range(num_workers * 2):
+                    try:
+                        start = next(start_gen)
+                        end_range = min(start + step, max_val)
+                        futures[executor.submit(find_root, start, end_range, n, e)] = (
+                            None
+                        )
+                    except StopIteration:
+                        break
+
+                while futures:
+                    done, _ = wait(futures, return_when=FIRST_COMPLETED)
+                    for future in done:
+                        result = future.result()
+                        if result:
+                            executor.shutdown(wait=False, cancel_futures=True)
+                            progress.close()
+                            print(f"{utils.RESET}")
+                            log.info(f"Looks like we got something!")
+                            return result
+                        progress.update(step // n)
+                        try:
+                            start = next(start_gen)
+                            end_range = min(start + step, max_val)
+                            futures[
+                                executor.submit(find_root, start, end_range, n, e)
+                            ] = None
+                        except StopIteration:
+                            pass
+                        del futures[future]
+    else:
         with ProcessPoolExecutor(max_workers=num_workers) as executor:
             futures = {}
             start_gen = (c + i * step for i in range(0, (max_val - c) // step + 1))
@@ -119,11 +157,9 @@ def partial_plaintext(n, c, e, len_flag=0, prefix="", cpu=os.cpu_count(), **kwar
                     result = future.result()
                     if result:
                         executor.shutdown(wait=False, cancel_futures=True)
-                        progress.close()
                         print(f"{utils.RESET}")
                         log.info(f"Looks like we got something!")
                         return result
-                    progress.update(step // n)
                     try:
                         start = next(start_gen)
                         end_range = min(start + step, max_val)

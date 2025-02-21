@@ -7,9 +7,9 @@ Author: Bitraven (Malek Tababi)
 """
 
 import argparse
-import utils
-from input_handler import load_json, load_params
-from attack_runner import (
+import Util.utils as utils
+from Util.input_handler import load_json, load_params
+from Util.attack_runner import (
     display_attack_menu,
     get_user_selection,
     perform_selected_attacks,

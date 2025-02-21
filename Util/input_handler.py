@@ -1,6 +1,6 @@
 import json
 from typing import Any, Dict
-import utils
+import Util.utils as utils
 
 
 def load_json(json_file: str) -> Dict[str, Any]:

@@ -4,7 +4,7 @@ import os
 import signal
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-import utils
+import Util.utils as utils
 
 signal.signal(signal.SIGALRM, utils.timeout_handler)
 

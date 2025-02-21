@@ -4,8 +4,8 @@ import os
 from Crypto.Util.number import long_to_bytes, getPrime, bytes_to_long
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-import utils
-from nerds import *
+import Util.utils as utils
+from Util.nerds import *
 
 
 def chosen(n, e, c, **kwargs):

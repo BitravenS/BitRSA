@@ -1,9 +1,9 @@
 from sage.all import *
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-import utils
+import Util.utils as utils
 from single.factor import sage_factorize
-from nerds import *
+from Util.nerds import *
 
 
 def common_fact(n, e, c):
@@ -19,7 +19,11 @@ def common_fact(n, e, c):
                 log.info(
                     f"Common factor found between the moduli number {i} and {j}: {g}"
                 )
-                factors = [g] + sage_factorize(n[i] // g)
+                sage = sage_factorize(n[i] // g)
+                if sage:
+                    factors = [g] + sage
+                else:
+                    factors = [g, n // g]
                 return utils.rsa_decrypt(factors, e[0], c[i])
     log.warning("No common factors found.")
-    return None
+    raise utils.Failure("No common factors found.")

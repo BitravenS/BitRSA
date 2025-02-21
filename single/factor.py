@@ -8,8 +8,8 @@ import signal
 import multiprocessing
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-import utils
-from nerds import *
+import Util.utils as utils
+from Util.nerds import *
 
 signal.signal(signal.SIGALRM, utils.timeout_handler)
 

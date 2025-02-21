@@ -3,8 +3,8 @@ from Crypto.Util.number import getPrime, bytes_to_long, long_to_bytes
 import signal
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-import utils
-from nerds import *
+import Util.utils as utils
+from Util.nerds import *
 from multi.related_m import franklin_reiter
 
 signal.signal(signal.SIGALRM, utils.timeout_handler)

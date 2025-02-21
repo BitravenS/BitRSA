@@ -3,8 +3,8 @@ from Crypto.Util.number import bytes_to_long, getPrime, long_to_bytes
 from sympy import integer_nthroot
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-import utils
-from nerds import *
+import Util.utils as utils
+from Util.nerds import *
 import random
 
 

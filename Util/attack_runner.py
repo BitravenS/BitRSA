@@ -1,8 +1,7 @@
 from typing import Any, Dict, List, Tuple, Optional
-import utils
+import Util.utils as utils
 from multi import common_e, common_fact, common_n, coopersmith, related_m
 from single import chosen, factor, small_e, wiener
-from tools import pub_ext, priv_ext
 
 ATTACKS_SGL: Dict[int, Dict[str, Any]] = {
     1: {"name": "Small e Attack", "function": small_e.partial_plaintext},
@@ -201,12 +200,20 @@ def perform_selected_attacks(
         log.debug(f"Performing {attack['name']}...")
         try:
             # Prepare common arguments for the attack functions.
-            arguments = {
-                "n": input_data["data"]["n"][0],
-                "e": input_data["data"]["e"][0],
-                "c": input_data["data"]["c"][0],
-            }
-            # Include any optional parameters if provided.
+            if num < 6:
+
+                arguments = {
+                    "n": input_data["data"]["n"][0],
+                    "e": input_data["data"]["e"][0],
+                    "c": input_data["data"]["c"][0],
+                }
+            else:
+                arguments = {
+                    "n": input_data["data"]["n"],
+                    "e": input_data["data"]["e"],
+                    "c": input_data["data"]["c"],
+                }
+                # Include any optional parameters if provided.
             for key in ["len_flag", "timeout", "cpu", "prefix"]:
                 if key in input_data:
                     arguments[key] = input_data[key]
@@ -216,6 +223,23 @@ def perform_selected_attacks(
             return (num, result)
         except Exception as e:
             log.error(f"{attack['name']} failed: {e}")
+            if num == 1:
+                log.warning(
+                    "Small e attack sometimes fails to find a solution with the progress bar enabled."
+                )
+                log.warning(
+                    "Would you like to try again without the progress bar? (y/n)"
+                )
+                choice = input("> ")
+                if choice.lower() == "y":
+                    arguments["tq"] = False
+                    log.debug("Retrying Small e attack without the progress bar...")
+                    try:
+                        result = attack["function"](**arguments)
+                        log.info(f"{attack['name']} completed successfully.")
+                        return (num, result)
+                    except Exception as e:
+                        log.error(f"{attack['name']} failed: {e}")
 
     # If no attack succeeded, return a failure result.
     return (-1, None)
