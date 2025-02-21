@@ -71,7 +71,7 @@ def sage_factorize(n, timeout=10):
         return None
 
 
-def fermat_factorization(n, timeout=10):
+def fermat_factorization(n, timeout=10, **kwargs):
     """
     Attempts fo factorize n using Fermat's factorization method.
     Best suited for numbers with two close prime factors.
@@ -79,6 +79,8 @@ def fermat_factorization(n, timeout=10):
     Source: https://github.com/RsaCtfTool/RsaCtfTool
     Preserved under the GPL-3.0 License
     """
+    cipher = kwargs.get("c", None)
+    e = kwargs.get("e", None)
     signal.alarm(timeout)
     log = utils.Logs("Fermat")
     if (n - 2) & 3 == 0:
@@ -94,7 +96,8 @@ def fermat_factorization(n, timeout=10):
     b = isqrt(b2)
 
     log.info(f"Factors found: {a - b},{a + b}")
-    return [a - b, a + b]
+
+    return utils.rsa_decrypt([a - b, a + b], e, cipher)
 
 
 def factorize(n, e, c, timeout=10, **kwargs):
@@ -118,7 +121,8 @@ def factorize(n, e, c, timeout=10, **kwargs):
         log.warning("Timeout reached. ")
     try:
         log.debug("Trying Fermat's factorization...")
-        return utils.rsa_decrypt(fermat_factorization(n, timeout), e, c)
+        return fermat_factorization(n, timeout, **kwargs)
+
     except TimeoutError:
         log.error("Timeout reached. No factors found :(")
         raise utils.Failure("No factors found.")
